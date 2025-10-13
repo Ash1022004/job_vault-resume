@@ -13,6 +13,8 @@ import Resources from "@/components/sections/Resources";
 import Testimonials from "@/components/Testimonials";
 import { resumeAnalyzerService, AnalysisResult } from "@/services/resumeAnalyzer";
 import { RefreshCw, Zap, FileText, Users, BookOpen } from "lucide-react";
+import SignIn from "@/components/SignIn";
+
 
 const Index = () => {
   const [currentSection, setCurrentSection] = useState("analyzer");
@@ -86,7 +88,8 @@ const Index = () => {
         return (
           <div className="space-y-12">
             {/* Hero Section */}
-            <Header />
+            <Header onBuildResumeClick={() => setCurrentSection("templates")} />
+
             
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto space-y-8">
@@ -98,12 +101,13 @@ const Index = () => {
                       Upload your resume in PDF or DOCX format for AI-powered analysis
                     </p>
                   </div>
-                  
+                  <section id="file-upload-section">
                   <FileUpload
                     onFileSelect={setSelectedFile}
                     selectedFile={selectedFile}
                     isAnalyzing={isAnalyzing}
                   />
+                  </section>
                 </section>
 
                 {/* Job Description Section */}

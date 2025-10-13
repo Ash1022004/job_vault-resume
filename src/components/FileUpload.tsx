@@ -2,6 +2,7 @@ import { useState, useRef, DragEvent } from "react";
 import { Upload, FileText, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
@@ -10,6 +11,7 @@ interface FileUploadProps {
 }
 
 const FileUpload = ({ onFileSelect, selectedFile, isAnalyzing }: FileUploadProps) => {
+  const navigate = useNavigate();
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

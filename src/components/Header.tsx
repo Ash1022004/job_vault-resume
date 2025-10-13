@@ -1,11 +1,18 @@
 import { FileText, Zap, Target, Star } from "lucide-react";
 import RotatingResumePreview from "./RotatingResumePreview";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import FileUplaod from "@/components/FileUpload";
 
-const Header = () => {
+interface HeaderProps {
+  onBuildResumeClick: () => void;
+}
+
+const Header = ({ onBuildResumeClick }: HeaderProps) => {
+    const navigate = useNavigate();
   return (
     <header className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-16 lg:py-24">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/10"></div>
-      
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/10"></div>     
       <div className="container relative z-10 mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
@@ -27,10 +34,13 @@ const Header = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105 shadow-lg">
+              <button  onClick={onBuildResumeClick} className="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105 shadow-lg">
                 Build Your Resume
               </button>
-              <button className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg font-semibold text-lg hover:border-gray-400 hover:bg-gray-50 transition-all">
+              <button onClick={() => {
+                      const section = document.getElementById("file-upload-section");
+                      section?.scrollIntoView({ behavior: "smooth" });
+                    }} className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg font-semibold text-lg hover:border-gray-400 hover:bg-gray-50 transition-all">
                 Get Your Resume Score
               </button>
             </div>
