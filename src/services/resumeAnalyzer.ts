@@ -45,6 +45,32 @@ export class ResumeAnalyzerService {
     }
   }
 
+  // Parse resume to extract text
+  async parseResume(file: File): Promise<{ extracted_text: string }> {
+    const formData = new FormData();
+    formData.append('resume', file);
+
+    try {
+      const response = await fetch(`${this.baseUrl}/parse`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Unable to connect to analysis server. Please ensure the backend is running on port 5001.');
+      }
+      throw error;
+    }
+  }
+
+
   // Health check method to verify backend connection
   async healthCheck(): Promise<boolean> {
     try {

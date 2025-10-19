@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
@@ -12,11 +14,12 @@ import ResumeExamples from "@/components/sections/ResumeExamples";
 import Resources from "@/components/sections/Resources";
 import Testimonials from "@/components/Testimonials";
 import { resumeAnalyzerService, AnalysisResult } from "@/services/resumeAnalyzer";
-import { RefreshCw, Zap, FileText, Users, BookOpen } from "lucide-react";
+import { RefreshCw, Zap, FileText, Users, BookOpen, Edit } from "lucide-react";
 import SignIn from "@/components/SignIn";
 
 
 const Index = () => {
+  const navigate = useNavigate();
   const [currentSection, setCurrentSection] = useState("analyzer");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState("");
@@ -74,6 +77,25 @@ const Index = () => {
     setSelectedFile(null);
     setJobDescription("");
     setResults(null);
+    };
+
+  const handleEditResume = async () => {
+    if (!selectedFile) return;
+    
+    // Check if user is logged in
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to edit your resume.",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+     // Navigate to resume editor with the file data
+    navigate("/edit-resume", { state: { resumeFile: selectedFile } });
   };
 
   const renderSection = () => {
@@ -88,10 +110,9 @@ const Index = () => {
         return (
           <div className="space-y-12">
             {/* Hero Section */}
-            <Header onBuildResumeClick={() => setCurrentSection("templates")} />
-
-            
-            <div className="container mx-auto px-4">
+            <Header />
+ 
+            <div id="analyzer-section" className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto space-y-8">
                 {/* File Upload Section */}
                 <section className="space-y-6">
@@ -169,7 +190,18 @@ const Index = () => {
                       </p>
                     </div>
                     
-                    <EnhancedAnalysisResults results={results} />
+                    <EnhancedAnalysisResults results={results} onEditResume={handleEditResume} />
+                     <div className="flex justify-center pt-6">
+                      <Button
+                        onClick={() => navigate('/builder')}
+                        size="lg"
+                        variant="gradient"
+                        className="font-semibold px-8 py-3"
+                      >
+                        <Edit className="w-5 h-5 mr-2" />
+                        Edit Your Resume
+                      </Button>
+                    </div>
                   </section>
                 )}
 

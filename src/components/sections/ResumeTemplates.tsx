@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
+import TemplatePreviewModal from "@/components/modals/TemplatePreviewModal";
+import { resumeTemplates } from "@/data/resumeTemplates";
 import { 
   FileText, 
   Download, 
@@ -17,71 +21,26 @@ import {
 } from "lucide-react";
 
 const ResumeTemplates = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [previewTemplate, setPreviewTemplate] = useState<any>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  const templates = [
-    {
-      id: 1,
-      name: "Professional Executive",
-      category: "business",
-      preview: "/api/placeholder/300/400",
-      description: "Clean, professional layout perfect for executive positions",
-      tags: ["ATS-Friendly", "Executive", "Corporate"],
-      color: "blue",
-      downloads: 1250
-    },
-    {
-      id: 2,
-      name: "Modern Developer",
-      category: "tech",
-      preview: "/api/placeholder/300/400",
-      description: "Tech-focused design with skills showcase section",
-      tags: ["Developer", "Modern", "Skills-Heavy"],
-      color: "green",
-      downloads: 890
-    },
-    {
-      id: 3,
-      name: "Creative Designer",
-      category: "creative",
-      preview: "/api/placeholder/300/400",
-      description: "Visually appealing layout for creative professionals",
-      tags: ["Creative", "Portfolio", "Visual"],
-      color: "purple",
-      downloads: 650
-    },
-    {
-      id: 4,
-      name: "Academic Scholar",
-      category: "academic",
-      preview: "/api/placeholder/300/400",
-      description: "Research-focused format for academic positions",
-      tags: ["Academic", "Research", "Publications"],
-      color: "indigo",
-      downloads: 430
-    },
-    {
-      id: 5,
-      name: "Healthcare Professional",
-      category: "healthcare",
-      preview: "/api/placeholder/300/400",
-      description: "Medical field optimized template",
-      tags: ["Healthcare", "Medical", "Clinical"],
-      color: "red",
-      downloads: 720
-    },
-    {
-      id: 6,
-      name: "Finance Analyst",
-      category: "finance",
-      preview: "/api/placeholder/300/400",
-      description: "Numbers-focused layout for finance roles",
-      tags: ["Finance", "Analytics", "Data"],
-      color: "emerald",
-      downloads: 580
-    }
-  ];
+  const handlePreview = (template: any) => {
+    setPreviewTemplate(template);
+    setIsPreviewOpen(true);
+  };
+
+  const handleUseTemplate = (template: any) => {
+    toast({
+      title: "Template Selected",
+      description: `${template.name} has been loaded. Redirecting to resume builder...`,
+    });
+    navigate("/builder", { state: { template } });
+  };
+
+  const templates = resumeTemplates;
 
   const categories = [
     { id: "all", label: "All Templates", icon: FileText },
@@ -103,6 +62,12 @@ const ResumeTemplates = () => {
 
   return (
     <div className="space-y-8 animate-fade-in">
+      <TemplatePreviewModal 
+        template={previewTemplate}
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        onUseTemplate={handleUseTemplate}
+      />
       {/* Header */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold">Professional Resume Templates</h1>
@@ -149,19 +114,21 @@ const ResumeTemplates = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredTemplates.map((template) => (
           <Card key={template.id} className="overflow-hidden hover:shadow-lg transition-shadow group">
-            <div className="aspect-[3/4] bg-gradient-to-br from-muted/30 to-muted/50 relative overflow-hidden">
-              {/* Template Preview Placeholder */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <FileText className="w-16 h-16 text-muted-foreground/50" />
-              </div>
+            <div className="aspect-[3/4] relative overflow-hidden">
+              {/* Template Preview Image */}
+              <img 
+                src={template.preview} 
+                alt={template.name}
+                className="w-full h-full object-cover"
+              />
               
               {/* Overlay Actions */}
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                <Button size="sm" variant="secondary">
+                <Button size="sm" variant="secondary" onClick={() => handlePreview(template)}>
                   <Eye className="w-4 h-4 mr-2" />
                   Preview
                 </Button>
-                <Button size="sm" variant="gradient">
+                <Button size="sm" variant="gradient" onClick={() => handleUseTemplate(template)}>
                   <Download className="w-4 h-4 mr-2" />
                   Use Template
                 </Button>
@@ -187,11 +154,11 @@ const ResumeTemplates = () => {
               </div>
 
               <div className="flex gap-2 pt-2">
-                <Button variant="outline" size="sm" className="flex-1">
+                <Button variant="outline" size="sm" className="flex-1" onClick={() => handlePreview(template)}>
                   <Eye className="w-4 h-4 mr-2" />
                   Preview
                 </Button>
-                <Button variant="gradient" size="sm" className="flex-1">
+                <Button variant="gradient" size="sm" className="flex-1" onClick={() => handleUseTemplate(template)}>
                   <Download className="w-4 h-4 mr-2" />
                   Use Template
                 </Button>

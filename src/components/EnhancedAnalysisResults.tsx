@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { 
   Target, 
   AlertTriangle, 
@@ -13,7 +14,8 @@ import {
   BarChart3,
   Eye,
   Award,
-  Clock
+  Clock,
+  Edit
 } from "lucide-react";
 
 interface EnhancedAnalysisResultsProps {
@@ -25,9 +27,10 @@ interface EnhancedAnalysisResultsProps {
       extracted_text_length: number;
     };
   };
+  onEditResume: () => void;
 }
 
-const EnhancedAnalysisResults = ({ results }: EnhancedAnalysisResultsProps) => {
+const EnhancedAnalysisResults = ({ results, onEditResume }: EnhancedAnalysisResultsProps) => {
   const scoreValue = parseInt(results.score.replace('%', ''));
   
   const getScoreColor = (score: number) => {
@@ -90,6 +93,13 @@ const EnhancedAnalysisResults = ({ results }: EnhancedAnalysisResultsProps) => {
             </Badge>
           </div>
         </div>
+        
+         {/* <div className="flex justify-center mb-6">
+          <Button onClick={onEditResume} variant="gradient" size="lg" className="gap-2">
+            <Edit className="w-5 h-5" />
+            Edit Your Resume
+          </Button>
+        </div> */}
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="text-center p-4 bg-white/50 rounded-lg">
