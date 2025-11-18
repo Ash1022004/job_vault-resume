@@ -15,6 +15,10 @@ import Auth from "@/pages/Auth";
 import ResumeBuilder from "@/pages/ResumeBuilder";
 import Subscribe from "@/pages/Subscribe";
 import Navigation from "./components/Navigation";
+import EditResume from "./pages/EditResume";
+import InterviewTipsPage from "./pages/InterviewTipsPage";
+import PDFResumeEditor from "@/pages/PDFResumeEditor";
+import SplitResumeEditor from "@/pages/SplitResumeEditor";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -31,6 +35,8 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="/Navigation" element={<Navigation />} />
             <Route path="/build-resume" element={<BuildResume />} />
+            <Route path="/interview-tips" element={<InterviewTipsPage />} />
+            <Route path="/edit" element={<EditResume />} />
              <Route path="/builder" element={
               <ProtectedRoute>
                 <ResumeBuilder />
@@ -41,6 +47,8 @@ const App = () => (
                 <ResumeEditor />
               </ProtectedRoute>
             } />
+            <Route path="/pdf-editor" element={<PDFResumeEditor />} />
+            <Route path="/split-editor" element={<SplitResumeEditor />} />
             <Route path="/subscribe" element={
               <ProtectedRoute>
                 <Subscribe />

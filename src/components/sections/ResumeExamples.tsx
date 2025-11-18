@@ -138,7 +138,7 @@ const ResumeExamples = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-12 bg-gradient-to-br from-slate-100 via-blue-750 to-indigo-200">
         <h1 className="text-4xl font-bold">Resume Examples & Success Stories</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Learn from real resume transformations and see what makes top-performing resumes stand out. 

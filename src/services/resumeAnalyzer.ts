@@ -14,7 +14,7 @@ export interface AnalysisRequest {
 }
 
 export class ResumeAnalyzerService {
-  private baseUrl = 'https://job-vault-resume.onrender.com';
+  private baseUrl = 'http://127.0.0.1:5001';
 
   async analyzeResume(request: AnalysisRequest): Promise<AnalysisResult> {
     const formData = new FormData();

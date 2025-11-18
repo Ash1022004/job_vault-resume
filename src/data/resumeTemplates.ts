@@ -5,12 +5,21 @@ import academicTemplate from "@/assets/templates/academic-template.png";
 import healthcareTemplate from "@/assets/templates/healthcare-template.png";
 import financeTemplate from "@/assets/templates/finance-template.png";
 
+// PDF files are in public directory for direct URL access
+const ResumeTemplate1 = "/assets/templates/Resume_template_1.pdf";
+const ResumeTemplate2 = "/assets/templates/Resume_template_2.pdf";
+const ResumeTemplate3 = "/assets/templates/Resume_template_3.pdf";
+const ResumeTemplate4 = "/assets/templates/Resume_template_4.pdf";
+const ResumeTemplate5 = "/assets/templates/Resume_template_5.pdf";
+const ResumeTemplate6 = "/assets/templates/Resume_template_6.pdf";
+
 export const resumeTemplates = [
   {
     id: 1,
     name: "Professional Executive",
     category: "business",
     preview: executiveTemplate,
+    pdfFile: ResumeTemplate1,
     description: "Clean, professional layout perfect for executive positions",
     tags: ["ATS-Friendly", "Executive", "Corporate"],
     color: "blue",
@@ -21,6 +30,7 @@ export const resumeTemplates = [
     name: "Modern Developer",
     category: "tech",
     preview: developerTemplate,
+    pdfFile: ResumeTemplate2,
     description: "Tech-focused design with skills showcase section",
     tags: ["Developer", "Modern", "Skills-Heavy"],
     color: "green",
@@ -31,6 +41,7 @@ export const resumeTemplates = [
     name: "Creative Designer",
     category: "creative",
     preview: creativeTemplate,
+    pdfFile: ResumeTemplate3,
     description: "Visually appealing layout for creative professionals",
     tags: ["Creative", "Portfolio", "Visual"],
     color: "purple",
@@ -41,6 +52,7 @@ export const resumeTemplates = [
     name: "Academic Scholar",
     category: "academic",
     preview: academicTemplate,
+    pdfFile: ResumeTemplate4,
     description: "Research-focused format for academic positions",
     tags: ["Academic", "Research", "Publications"],
     color: "indigo",
@@ -51,6 +63,7 @@ export const resumeTemplates = [
     name: "Healthcare Professional",
     category: "healthcare",
     preview: healthcareTemplate,
+    pdfFile: ResumeTemplate5,
     description: "Medical field optimized template",
     tags: ["Healthcare", "Medical", "Clinical"],
     color: "red",
@@ -61,6 +74,7 @@ export const resumeTemplates = [
     name: "Finance Analyst",
     category: "finance",
     preview: financeTemplate,
+    pdfFile: ResumeTemplate6,
     description: "Numbers-focused layout for finance roles",
     tags: ["Finance", "Analytics", "Data"],
     color: "emerald",

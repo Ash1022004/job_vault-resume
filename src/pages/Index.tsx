@@ -14,9 +14,10 @@ import ResumeExamples from "@/components/sections/ResumeExamples";
 import Resources from "@/components/sections/Resources";
 import Testimonials from "@/components/Testimonials";
 import { resumeAnalyzerService, AnalysisResult } from "@/services/resumeAnalyzer";
-import { RefreshCw, Zap, FileText, Users, BookOpen, Edit } from "lucide-react";
+import { RefreshCw, Zap, FileText, Users, BookOpen, ArrowRight, Lightbulb, Edit } from "lucide-react";
 import SignIn from "@/components/SignIn";
-
+import { CareerFAQ } from "@/components/CareerFAQ";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -82,20 +83,8 @@ const Index = () => {
   const handleEditResume = async () => {
     if (!selectedFile) return;
     
-    // Check if user is logged in
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      toast({
-        title: "Login Required",
-        description: "Please log in to edit your resume.",
-        variant: "destructive",
-      });
-      navigate("/auth");
-      return;
-    }
-
-     // Navigate to resume editor with the file data
-    navigate("/edit-resume", { state: { resumeFile: selectedFile } });
+    // Navigate to split resume editor with the file data
+    navigate("/split-editor", { state: { file: selectedFile } });
   };
 
   const renderSection = () => {
@@ -192,19 +181,63 @@ const Index = () => {
                     
                     <EnhancedAnalysisResults results={results} onEditResume={handleEditResume} />
                      <div className="flex justify-center pt-6">
-                      <Button
-                        onClick={() => navigate('/builder')}
-                        size="lg"
-                        variant="gradient"
-                        className="font-semibold px-8 py-3"
-                      >
-                        <Edit className="w-5 h-5 mr-2" />
-                        Edit Your Resume
-                      </Button>
+                      {selectedFile && (
+                        <Button
+                          className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+                          onClick={() => navigate("/edit", { state: { file: selectedFile } })}
+                        >
+                          Edit Your Resume
+                        </Button>
+                      )}
                     </div>
                   </section>
                 )}
 
+                 <section className="relative left-[50%] right-[50%] ml-[-50vw] mr-[-50vw] w-screen bg-gradient-to-b from-[#06245e] via-[#0d3385] to-[#1749b0] text-white py-24 text-center overflow-hidden">
+                    <div className="w-full max-w-5xl mx-auto px-6">
+                      <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+                        Ace Your Next Interview with Confidence
+                      </h2>
+                      <p className="text-lg sm:text-xl mb-10 text-gray-200">
+                        Discover expert tips, proven strategies, and real-world examples to help you stand out in every interview. 
+                        Prepare smarter and boost your confidence — all in one place.
+                      </p>
+
+                      <div className="flex justify-center">
+                        <Link to="/interview-tips">
+                          <Button
+                            size="lg"
+                            className="group bg-gradient-to-r from-[#0072ff] to-[#00c6ff] text-white text-lg font-semibold px-10 py-6 
+                                      rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:opacity-95 
+                                      flex items-center justify-center"
+                          >
+                            <Lightbulb className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                            Interview Tips & Strategies
+                            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </section>
+
+
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12 max-w-4xl mx-auto">
+                  <div className="p-6 rounded-lg bg-card border border-border/50 hover:shadow-lg transition-all">
+                    <div className="text-3xl font-bold text-primary mb-2">6+</div>
+                    <div className="text-sm text-muted-foreground">Expert Interview Tips</div>
+                  </div>
+                  <div className="p-6 rounded-lg bg-card border border-border/50 hover:shadow-lg transition-all">
+                    <div className="text-3xl font-bold text-accent mb-2">15+</div>
+                    <div className="text-sm text-muted-foreground">Career FAQs</div>
+                  </div>
+                  <div className="p-6 rounded-lg bg-card border border-border/50 hover:shadow-lg transition-all">
+                    <div className="text-3xl font-bold text-primary mb-2">4</div>
+                    <div className="text-sm text-muted-foreground">Industry Categories</div>
+                  </div>
+                </div>
+                {/* Career FAQ Section */}
+                <CareerFAQ />
                 {/* Testimonials Section */}
                 {!isAnalyzing && (
                   <section className="pt-16">

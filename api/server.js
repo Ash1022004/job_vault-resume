@@ -128,6 +128,49 @@ app.post('/analyze', upload.single('resume'), async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+// -------------------------------------
+// 🧩 New Parse Endpoint
+// -------------------------------------
+app.post('/parse', upload.single('resume'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No resume file provided.' });
+        }
+
+        // Reuse your existing text extraction function
+        const resumeText = await extractText(req.file);
+
+        res.json({
+            extracted_text: resumeText,
+            extracted_text_length: resumeText.length
+        });
+
+    } catch (error) {
+        console.error("Error during resume parsing:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+// Add this to api/server.js
+
+app.post('/enhance-resume', express.json(), async (req, res) => {
+  try {
+    const { resumeText, jobDescription } = req.body;
+    // The prompt for AI enhancement
+    let prompt = `Act as a professional resume writer and ATS optimization expert.
+Rewrite or enhance the following resume to maximize ATS score, recruiter readability, formatting, and impact.
+Output an improved version with all critical missing keywords and best practices integrated.
+The result should be ready to edit, with improved language, structure, and clarity.
+${jobDescription ? `Here is the target job description for context:\n${jobDescription}` : ""}
+--- ORIGINAL RESUME ---\n${resumeText}`;
+    // Replace this with your AI model code
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const enhancedResume = response.text().trim();
+    res.json({ enhancedResume });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Start The Server
 app.listen(port, () => {

@@ -19,7 +19,10 @@ import {
   Calculator,
   Palette
 } from "lucide-react";
-
+const templates = [
+  { name: "Modern Template", url: "/assets/templates/template1.pdf" },
+  { name: "Classic Template", url: "/assets/templates/template2.pdf" },
+];
 const ResumeTemplates = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,9 +38,9 @@ const ResumeTemplates = () => {
   const handleUseTemplate = (template: any) => {
     toast({
       title: "Template Selected",
-      description: `${template.name} has been loaded. Redirecting to resume builder...`,
+      description: `${template.name} has been loaded. Opening PDF editor...`,
     });
-    navigate("/builder", { state: { template } });
+    navigate("/pdf-editor", { state: { template } });
   };
 
   const templates = resumeTemplates;
@@ -69,7 +72,7 @@ const ResumeTemplates = () => {
         onUseTemplate={handleUseTemplate}
       />
       {/* Header */}
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-12 bg-gradient-to-br from-slate-100 via-blue-750 to-indigo-200">
         <h1 className="text-4xl font-bold">Professional Resume Templates</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Choose from our collection of ATS-optimized, professionally designed resume templates. 

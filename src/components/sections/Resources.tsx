@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import { 
   BookOpen, 
   Video, 
@@ -13,11 +14,36 @@ import {
   Lightbulb,
   Target,
   Briefcase,
-  MessageSquare
+  MessageSquare,
+  ExternalLink
 } from "lucide-react";
 
+interface ResourceItem {
+  title: string;
+  type: string;
+  duration: string;
+  description: string;
+  tags: string[];
+  popular?: boolean;
+  url?: string;
+  action?: () => void;
+}
+
+interface CareerTip {
+  icon: any;
+  title: string;
+  description: string;
+  url?: string;
+}
+
 const Resources = () => {
-  const resourceCategories = [
+  const { toast } = useToast();
+  
+  const resourceCategories: Array<{
+    title: string;
+    icon: any;
+    items: ResourceItem[];
+  }> = [
     {
       title: "Resume Writing Guides",
       icon: BookOpen,
@@ -28,21 +54,24 @@ const Resources = () => {
           duration: "15 min read",
           description: "Learn how to write an ATS-friendly resume that gets past automated screening systems.",
           tags: ["ATS", "Writing", "2024"],
-          popular: true
+          popular: true,
+          url: "https://www.themuse.com/advice/ats-resume-tips"
         },
         {
           title: "Industry-Specific Resume Tips",
           type: "Guide",
           duration: "20 min read", 
           description: "Tailored advice for tech, healthcare, finance, and other major industries.",
-          tags: ["Industry", "Customization", "Tips"]
+          tags: ["Industry", "Customization", "Tips"],
+          url: "https://www.indeed.com/career-advice/resumes-cover-letters/industry-specific-resume-tips"
         },
         {
           title: "Action Words That Get Results",
           type: "Checklist",
           duration: "5 min read",
           description: "200+ powerful action verbs to make your achievements stand out.",
-          tags: ["Action Words", "Impact", "Checklist"]
+          tags: ["Action Words", "Impact", "Checklist"],
+          url: "https://www.indeed.com/career-advice/resumes-cover-letters/resume-action-words"
         }
       ]
     },
@@ -55,21 +84,24 @@ const Resources = () => {
           type: "Video",
           duration: "12 min",
           description: "Visual guide to creating clean, professional resume layouts.",
-          tags: ["Formatting", "Design", "Visual"]
+          tags: ["Formatting", "Design", "Visual"],
+          url: "https://www.youtube.com/watch?v=8j3FaWGe43s"
         },
         {
           title: "Optimizing for Applicant Tracking Systems",
           type: "Video", 
           duration: "18 min",
           description: "Step-by-step process to ensure your resume passes ATS screening.",
-          tags: ["ATS", "Optimization", "Tutorial"]
+          tags: ["ATS", "Optimization", "Tutorial"],
+          url: "https://www.youtube.com/watch?v=W4jf7D1VSvQ"
         },
         {
           title: "Common Resume Mistakes to Avoid",
           type: "Video",
           duration: "10 min",
           description: "Learn what recruiters hate to see and how to fix these issues.",
-          tags: ["Mistakes", "Fixes", "Recruiter Tips"]
+          tags: ["Mistakes", "Fixes", "Recruiter Tips"],
+          url: "https://www.youtube.com/watch?v=jN2L2NxBcMQ"
         }
       ]
     },
@@ -82,46 +114,59 @@ const Resources = () => {
           type: "Tool",
           duration: "Free",
           description: "Check if your resume contains the right keywords for your target role.",
-          tags: ["Keywords", "Analysis", "Free"]
+          tags: ["Keywords", "Analysis", "Free"],
+          url: "https://www.jobscan.co/"
         },
         {
           title: "Professional Resume Templates",
           type: "Templates",
           duration: "Instant Download",
           description: "15+ ATS-optimized templates for different industries and experience levels.",
-          tags: ["Templates", "Professional", "ATS"]
+          tags: ["Templates", "Professional", "ATS"],
+          url: "https://www.zety.com/resume-templates",
+          action: () => {
+            toast({
+              title: "Download Available",
+              description: "Scroll down to access templates on the page.",
+            });
+          }
         },
         {
           title: "Cover Letter Generator",
           type: "Tool", 
           duration: "5 min",
           description: "AI-powered tool to create compelling cover letters that match your resume.",
-          tags: ["Cover Letter", "AI", "Generator"]
+          tags: ["Cover Letter", "AI", "Generator"],
+          url: "https://www.zety.com/cover-letter-builder"
         }
       ]
     }
   ];
 
-  const careerTips = [
+  const careerTips: CareerTip[] = [
     {
       icon: Target,
       title: "Job Search Strategy",
-      description: "Effective techniques for finding and applying to the right opportunities"
+      description: "Effective techniques for finding and applying to the right opportunities",
+      url: "https://www.indeed.com/career-advice/finding-a-job/job-search-strategy"
     },
     {
       icon: MessageSquare,
       title: "Interview Preparation", 
-      description: "Common questions, STAR method, and confidence-building techniques"
+      description: "Common questions, STAR method, and confidence-building techniques",
+      url: "https://www.indeed.com/career-advice/interviewing/how-to-prepare-for-a-job-interview"
     },
     {
       icon: Briefcase,
       title: "LinkedIn Optimization",
-      description: "Profile optimization tips to increase recruiter visibility"
+      description: "Profile optimization tips to increase recruiter visibility",
+      url: "https://www.linkedin.com/help/linkedin/answer/a522059/how-to-optimize-your-linkedin-profile"
     },
     {
       icon: TrendingUp,
       title: "Salary Negotiation",
-      description: "Research methods and negotiation strategies for better compensation"
+      description: "Research methods and negotiation strategies for better compensation",
+      url: "https://www.indeed.com/career-advice/pay-salary/how-to-negotiate-salary"
     }
   ];
 
@@ -135,7 +180,7 @@ const Resources = () => {
   return (
     <div className="space-y-12 animate-fade-in">
       {/* Header */}
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-12 bg-gradient-to-br from-slate-100 via-blue-750 to-indigo-200">
         <h1 className="text-4xl font-bold">Career Resources & Guides</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Everything you need to create winning resumes, ace interviews, and advance your career. 
@@ -210,7 +255,22 @@ const Resources = () => {
                       ))}
                     </div>
 
-                    <Button variant="outline" className="w-full">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => {
+                        if (item.action) {
+                          item.action();
+                        }
+                        if (item.url) {
+                          window.open(item.url, "_blank", "noopener,noreferrer");
+                          toast({
+                            title: "Opening Resource",
+                            description: `${item.title} is opening in a new tab.`,
+                          });
+                        }
+                      }}
+                    >
                       {category.icon === Download ? (
                         <>
                           <Download className="w-4 h-4 mr-2" />
@@ -227,6 +287,7 @@ const Resources = () => {
                           Read Guide
                         </>
                       )}
+                      <ExternalLink className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
                 </Card>
@@ -257,7 +318,20 @@ const Resources = () => {
                   <div className="space-y-2">
                     <h3 className="font-semibold text-lg">{tip.title}</h3>
                     <p className="text-sm text-muted-foreground">{tip.description}</p>
-                    <Button variant="ghost" size="sm" className="p-0 h-auto text-primary">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="p-0 h-auto text-primary"
+                      onClick={() => {
+                        if (tip.url) {
+                          window.open(tip.url, "_blank", "noopener,noreferrer");
+                          toast({
+                            title: "Opening Guide",
+                            description: `${tip.title} guide is opening in a new tab.`,
+                          });
+                        }
+                      }}
+                    >
                       Learn more →
                     </Button>
                   </div>
