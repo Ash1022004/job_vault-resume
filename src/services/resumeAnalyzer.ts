@@ -3,6 +3,9 @@ export interface AnalysisResult {
   score: string;
   missing_keywords: string[];
   suggestions: string[];
+  formatting_issues?: string[];
+  strengths?: string[];
+  improvements?: string[];
   parsed?: {
     extracted_text_length: number;
   };

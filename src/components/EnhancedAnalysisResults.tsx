@@ -23,6 +23,9 @@ interface EnhancedAnalysisResultsProps {
     score: string;
     missing_keywords: string[];
     suggestions: string[];
+    formatting_issues?: string[];
+    strengths?: string[];
+    improvements?: string[];
     parsed?: {
       extracted_text_length: number;
     };
@@ -39,28 +42,29 @@ const EnhancedAnalysisResults = ({ results, onEditResume }: EnhancedAnalysisResu
     return 'text-destructive';
   };
 
-  // Mock additional analysis data (in real app, this would come from backend)
+  // Use API data for formatting, strengths, and improvements
+  // Fallback to defaults if API didn't return these fields
+  const formattingIssues = results.formatting_issues && results.formatting_issues.length > 0 
+    ? results.formatting_issues 
+    : ["Consider using bullet points for achievements", "Add more white space for better readability", "Use consistent date formatting"];
+  
+  const strengths = results.strengths && results.strengths.length > 0
+    ? results.strengths
+    : ["Clear professional summary", "Quantified achievements", "Relevant work experience"];
+  
+  const improvements = results.improvements && results.improvements.length > 0
+    ? results.improvements
+    : ["Add more action verbs", "Include industry-specific keywords", "Highlight leadership experience"];
+
   const detailedAnalysis = {
     formatting: {
       score: Math.min(85, scoreValue + 10),
-      issues: [
-        "Consider using bullet points for achievements",
-        "Add more white space for better readability",
-        "Use consistent date formatting"
-      ]
+      issues: formattingIssues
     },
     content: {
       score: Math.max(scoreValue - 5, 50),
-      strengths: [
-        "Clear professional summary",
-        "Quantified achievements",
-        "Relevant work experience"
-      ],
-      improvements: [
-        "Add more action verbs",
-        "Include industry-specific keywords",
-        "Highlight leadership experience"
-      ]
+      strengths: strengths,
+      improvements: improvements
     },
     ats: {
       score: scoreValue,

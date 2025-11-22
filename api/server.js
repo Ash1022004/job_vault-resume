@@ -56,13 +56,19 @@ app.post('/analyze', upload.single('resume'), async (req, res) => {
                 {
                 "score": "string", 
                 "missing_keywords": ["string"], 
-                "suggestions": ["string", "string"]
+                "suggestions": ["string", "string"],
+                "formatting_issues": ["string", "string", "string"],
+                "strengths": ["string", "string", "string"],
+                "improvements": ["string", "string", "string"]
                 }
 
                 Instructions:
                 1. **score** → Provide an ATS Score (0–100%) based on how well my resume is optimized for applicant tracking systems and recruiter readability. Consider formatting, keyword richness, sectioning, and clarity.
                 2. **missing_keywords** → Identify critical technical and professional keywords that are generally expected in competitive resumes for my field but are missing or underemphasized.
                 3. **suggestions** → Provide actionable improvements to make my resume more ATS-friendly.
+                4. **formatting_issues** → Analyze the resume's formatting and provide 3 specific formatting issues or suggestions based on the actual resume content (e.g., spacing, bullet points, date formats, section organization, etc.). Make these specific to THIS resume.
+                5. **strengths** → Identify 3 specific strengths of THIS resume based on its actual content (e.g., specific achievements, well-written sections, good structure, etc.). Make these specific to THIS resume.
+                6. **improvements** → Provide 3 specific areas for improvement based on the actual content of THIS resume (e.g., missing sections, weak descriptions, lack of quantification, etc.). Make these specific to THIS resume.
 
                 
                 --- JOB DESCRIPTION ---
@@ -80,13 +86,19 @@ app.post('/analyze', upload.single('resume'), async (req, res) => {
                 {
                 "score": "string", 
                 "missing_keywords": ["string"], 
-                "suggestions": ["string", "string"]
+                "suggestions": ["string", "string"],
+                "formatting_issues": ["string", "string", "string"],
+                "strengths": ["string", "string", "string"],
+                "improvements": ["string", "string", "string"]
                 }
 
                 Instructions:
                 1. **Score** → Provide an ATS Score (0–100%) based on how well my resume is optimized for applicant tracking systems and recruiter readability. Consider keyword density, formatting, sectioning, readability, and overall relevance for general software/engineering roles.
                 2. **Missing_keywords** → Identify critical technical and professional keywords that are generally expected in competitive resumes for my field but are missing or not emphasized enough.
                 3. **Suggestions** → Provide actionable suggestions on how to improve my resume to make it more ATS-friendly and recruiter-ready.
+                4. **formatting_issues** → Analyze the resume's formatting and provide 3 specific formatting issues or suggestions based on the actual resume content (e.g., spacing, bullet points, date formats, section organization, etc.). Make these specific to THIS resume.
+                5. **strengths** → Identify 3 specific strengths of THIS resume based on its actual content (e.g., specific achievements, well-written sections, good structure, etc.). Make these specific to THIS resume.
+                6. **improvements** → Provide 3 specific areas for improvement based on the actual content of THIS resume (e.g., missing sections, weak descriptions, lack of quantification, etc.). Make these specific to THIS resume.
 
                 ---
 
@@ -116,8 +128,11 @@ app.post('/analyze', upload.single('resume'), async (req, res) => {
         // 4. Send the Final Response to the Frontend
         res.json({
             score: analysisResult.score,
-            missing_keywords: analysisResult.missing_keywords,
-            suggestions: analysisResult.suggestions,
+            missing_keywords: analysisResult.missing_keywords || [],
+            suggestions: analysisResult.suggestions || [],
+            formatting_issues: analysisResult.formatting_issues || [],
+            strengths: analysisResult.strengths || [],
+            improvements: analysisResult.improvements || [],
             parsed: {
                 extracted_text_length: resumeText.length,
             }
